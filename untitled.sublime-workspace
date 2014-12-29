@@ -1,0 +1,423 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"op",
+				"opponent"
+			],
+			[
+				"goa",
+				"goalPosX"
+			],
+			[
+				"goal",
+				"goalPosY"
+			],
+			[
+				"go",
+				"goalPosY"
+			],
+			[
+				"ac",
+				"actor"
+			],
+			[
+				"rand",
+				"rand16Meters"
+			],
+			[
+				"act",
+				"actorPos"
+			],
+			[
+				"random",
+				"randomGetal"
+			],
+			[
+				"en",
+				"energy"
+			],
+			[
+				"ti",
+				"tilepos"
+			],
+			[
+				"selected",
+				"selectedSurvivor"
+			],
+			[
+				"selec",
+				"selectedSurvivor"
+			],
+			[
+				"res",
+				"resolution"
+			],
+			[
+				"game",
+				"gameSettings"
+			],
+			[
+				"y",
+				"y"
+			],
+			[
+				"randSc",
+				"randScreenY"
+			],
+			[
+				"to",
+				"totalScore"
+			],
+			[
+				"le",
+				"levelFinishedScreen"
+			],
+			[
+				"s",
+				"survivor"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "SoccerManager/classes.lua",
+			"settings":
+			{
+				"buffer_size": 12714,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "main.lua",
+			"settings":
+			{
+				"buffer_size": 4039,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "SoccerManager/levelmanager.lua",
+			"settings":
+			{
+				"buffer_size": 3454,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "Packages/User/love.sublime-build",
+	"command_palette":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Users/marcel/Documents/GitHub/SoccerManager/main.lua",
+		"/C/Users/marcel/Documents/GitHub/SoccerManager/SoccerManager/classes.lua",
+		"/C/Users/marcel/Documents/GitHub/SoccerManager/SoccerManager/levelmanager.lua",
+		"/C/Users/marcel/Documents/GitHub/Margus/marsgus/classes.lua",
+		"/C/Users/marcel/Documents/GitHub/Margus/untitled.sublime-project",
+		"/C/Users/marcel/Documents/GitHub/Margus/marsgus/astar.lua",
+		"/C/Users/marcel/Documents/GitHub/Margus/marsgus/levelmanager.lua",
+		"/C/Users/marcel/Documents/GitHub/Margus/hump/gamestate.lua",
+		"/C/Users/marcel/Documents/GitHub/Margus/main.lua",
+		"/C/Users/marcel/Documents/GitHub/Margus/game.love",
+		"/C/Users/marcel/Documents/GitHub/Margus/hiscore.txt",
+		"/C/Android/android-sdk/tools/ant/build.xml",
+		"/C/Users/marcel/Documents/GitHub/Margus/config.lua",
+		"/C/Users/marcel/Documents/GitHub/Margus/untitled.sublime-workspace",
+		"/C/love/love-0.9.0-win64/Margus-master/main.lua",
+		"/C/love/love-0.9.0-win64/Margus-master/marsgus/classes.lua",
+		"/C/Users/marcel/AppData/Roaming/Sublime Text 3/Packages/User/love.sublime-build",
+		"/C/Users/marcel/AppData/Roaming/Sublime Text 3/Packages/User/love.sublimetext-build"
+	],
+	"find":
+	{
+		"height": 23.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"tilem",
+			"keeperWait",
+			"arrive",
+			"gameSettings",
+			"keeperBlock",
+			"keeperWait",
+			"Animation",
+			"match",
+			"for",
+			"Animation",
+			"sprite",
+			"update",
+			"boot",
+			"print",
+			"survivor",
+			"nextlevel",
+			"player.score",
+			"score",
+			"gameover",
+			"score",
+			"high",
+			"print",
+			"randomTime",
+			"print",
+			"math",
+			"window",
+			"print",
+			"arrive",
+			"decals",
+			"Entity",
+			"arrive",
+			"android",
+			"blocked",
+			"onlyWater",
+			"levelManager",
+			"nextLevelScreen",
+			"self",
+			"checkFinished",
+			"allOnBoard",
+			"tilemap",
+			"find",
+			"WalkPath",
+			"selectedSurvivor",
+			"entity",
+			"blocked",
+			"find",
+			"allOnBoard",
+			"blocked",
+			"tilemap:blocked",
+			"allOnBoard",
+			"all",
+			"walkpath",
+			"giveJob",
+			"walk",
+			"valid",
+			"> 0",
+			"levelUp",
+			"finished",
+			"placeran"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "SoccerManager/classes.lua",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 12714,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								10836,
+								10836
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 5048.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "main.lua",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4039,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3423,
+								3427
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "SoccerManager/levelmanager.lua",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3454,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3378,
+								3378
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Lua/Lua.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 421.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 238.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "untitled.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 207.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
