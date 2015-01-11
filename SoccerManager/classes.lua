@@ -13,7 +13,7 @@ SoccerManager.Tilemap = Class {
 		self.quads[3] = love.graphics.newQuad(0, 0, 8, 8, image:getWidth(), image:getHeight()) 	-- water
 		self.quads[4] = love.graphics.newQuad(64, 0, 16, 16, image:getWidth(), image:getHeight()) 	-- rock
 		end,
-	
+
 	updateTilesetBatch = function(self)
 		self.tilesetBatch:clear()
 		for x=1, gameSettings.resolution.width / (gameSettings.tileSize * gameSettings.zoom) do
@@ -27,21 +27,21 @@ SoccerManager.Tilemap = Class {
 			end
 		end
 	end,
-	
+
 	loadMap = function(self, map)
 		self.map = map
 		self:updateTilesetBatch()
 	end,
-	
+
 	updateMap = function(self, pos, value)
 		self.map[pos.y][pos.x] = value
 		self:updateTilesetBatch()
 	end,
-	
+
 	draw = function(self)
 		love.graphics.draw(self.tilesetBatch)
 	end,
-	
+
 	tile = function(self, x, y)
 		return self.map[y][x]
 	end,
@@ -54,7 +54,7 @@ SoccerManager.Tilemap = Class {
 		end
 		do return false end
 	end,
-	
+
 	blocked = function(self, pos)
 
 		if (self:valid(pos)) then
@@ -69,7 +69,7 @@ SoccerManager.Tilemap = Class {
 
 
 SoccerManager.Animation = Class {
-	init = function(self, image, pos, steps, typeOpponent, energy, updateDelay)
+	init = function(self, image, pos, steps, updateDelay)
 		if (steps == nil) then steps = 1 end
 		if (updateDelay == nil) then updateDelay = 0.1 end
 
@@ -133,31 +133,27 @@ SoccerManager.Animation = Class {
 }
 
 SoccerManager.Entity = Class {
-	init = function(self, image, pos, steps, typeOpponent, energy)
+	init = function(self, image, tilePos, steps)
+		self.tilePos = tilePos
+		self.pixelOffset = {x=0, y=0}
+
 		self.sprite = SoccerManager.Animation(
 			image,
-			{x=(pos.x-1)*gameSettings.tileSize*gameSettings.zoom, y=(pos.y-1)*gameSettings.tileSize*gameSettings.zoom},
-			steps,
-			typeOpponent,
-			energy
+			self:pixelPos(),
+			steps
 		)
 		self.job = nil
-		self.tilePosCache = self:tilePos()
 	end,
-	tilePos = function(self)
-		local tile_x = math.floor(self.sprite.pos.x * 1000 / (gameSettings.tileSize * gameSettings.zoom * 1000)) + 1
-		local tile_y = math.floor(self.sprite.pos.y * 1000 / (gameSettings.tileSize * gameSettings.zoom * 1000)) + 1
-		
-		return {x = tile_x, y=tile_y}
-	end,
-	recalculateSpritePosition = function(self)
-		self.sprite.pos = {
-			x=(self.tilePosCache.x-1)*(gameSettings.tileSize*gameSettings.zoom),
-			y=(self.tilePosCache.y-1)*(gameSettings.tileSize*gameSettings.zoom)
+	pixelPos = function(self)
+		return {
+			x = ((self.tilePos.x - 1) * gameSettings.tileSize * gameSettings.zoom) + self.pixelOffset.x,
+			y = ((self.tilePos.y - 1) * gameSettings.tileSize * gameSettings.zoom) + self.pixelOffset.y
 		}
 	end,
  	draw = function(self)
+ 		self.sprite.pos = self:pixelPos()
 		self.sprite:draw()
+
 	end,
 	update = function(self, dt)
 		self.sprite:update(dt)
@@ -172,11 +168,21 @@ SoccerManager.Entity = Class {
 	end
 }
 
+SoccerManager.ball = Class{
+	__includes = SoccerManager.Entity,
+	init = function(self, x, y, speed)
+	--print ("wat is x ", x, "en y ", y)
+		local posBall = {x=x,y=y}
+		self.normalImage = love.graphics.newImage("tileset/ball.png")
+		SoccerManager.Entity.init(self, self.normalImage, posBall, 4)
+	end
+}
+
 SoccerManager.player = Class {
 	__includes = SoccerManager.Entity,
 	init = function(self, pos, typePlayer)
 		self.normalImage = love.graphics.newImage("tileset/team1.png")
-		
+
 		SoccerManager.Entity.init(self, self.normalImage, pos, 4)
 	end,
 	giveJob = function(self, name, options)
@@ -193,31 +199,21 @@ SoccerManager.player = Class {
 	end
 }
 
-SoccerManager.ball = Class{
-	__includes = SoccerManager.Entity,
-	init = function(self, x, y, speed)
-	--print ("wat is x ", x, "en y ", y)
-		local posBall = {x=x,y=y}
-		self.normalImage = love.graphics.newImage("tileset/ball.png")
-		SoccerManager.Entity.init(self, self.normalImage, posBall, 4)
-	end
-}
-
 SoccerManager.opponent = Class {
 	__includes = SoccerManager.Entity,
 	init = function(self, pos, typeOpponent, energy)
 		self.normalImage = love.graphics.newImage("tileset/team2.png")
 		self.typeOpponent = typeOpponent
 		self.energy = energy
-		SoccerManager.Entity.init(self, self.normalImage, pos, 4, typeOpponent, energy)
+		SoccerManager.Entity.init(self, self.normalImage, pos, 4)
 	end,
-	
+
 	update = function(self, dt)
 		SoccerManager.Entity.update(self, dt)
-		
-	-- collision with ball
-	local opponentCenter = self.sprite:center()
-		
+
+		-- collision with ball
+		local opponentCenter = self.sprite:center()
+
 		if (self.job == nil) then
 			if (self.typeOpponent == "goalkeeper") then
 				local randomGetal = math.random(1, 100)
@@ -225,18 +221,18 @@ SoccerManager.opponent = Class {
 					-- keeper blijft op doellijn staan
 					self:giveJob("keeperWait")
 				else
-					local deltaX = self.sprite.pos.x - ball.x
-					local deltaY = self.sprite.pos.y - ball.y
-					if (deltaX > 1) then
+					--local deltaX = self.sprite.pos.x - ball.x
+					--local deltaY = self.sprite.pos.y - ball.y
+					--if (deltaX > 1) then
 						self:giveJob("keeperBlock")
-					else
-						self:giveJob("keeperWait")
-					end
+					--else
+--						self:giveJob("keeperWait")
+--					end
 				end
-			
+
 			elseif (self.typeOpponent == "defender") then
 				if (self.job == nil) then
-				
+
 					local randomGetal = math.random(1, 100)
 					if (randomGetal <=70) then
 						print("pass energy low",self.energy)
@@ -245,12 +241,12 @@ SoccerManager.opponent = Class {
 							ball.speed = 50
 							self:giveJob("passBall")
 
-							
+
 						else
 							self:giveJob("defenderPositionWalk")
 
 						end
-						
+
 						-- geef ik een paas
 
 					elseif (randomGetal >70 and randomGetal <=90) then
@@ -262,10 +258,10 @@ SoccerManager.opponent = Class {
 					end
 				end
 			elseif (self.typeOpponent == "midfielder") then
-				
-			
+
+
 			elseif (self.typeOpponent == "attacker") then
-			
+
 				local randomGoal = math.random(1, 100)
 				if (randomGoal < 2) then
 					teamPlayer.goals = teamPlayer.goals + 1
@@ -273,8 +269,8 @@ SoccerManager.opponent = Class {
 			end
 		end
 	end,
-	
-	arrive = function(self, x, y)
+
+	arrive = function(self, pos)
 		--loop en ik kom aan op mijn positie en wat ga ik dan doen?
 	end
 }
@@ -300,51 +296,74 @@ SoccerManager.WalkPath = Class {
 	__includes = SoccerManager.Job,
 	init = function(self, actor, options)
 		SoccerManager.Job.init(self, actor, options)
-		local currentPos = self.actor.sprite.pos
-		--if (#self.options.path > 1) then table.remove(self.options.path, 1) end
-
-		local goalTile = self.options.path[1]
-		if (currentPos.x == goalTile.pos.x and currentPos.y == goalTile.pos.y) then table.remove(self.options.path, 1) end
+		-- local currentPos = self.actor.tilePos
+		-- local goalTile = self.options.path[1]
+		-- if (currentPos.x == goalTile.pos.x and currentPos.y == goalTile.pos.y) then table.remove(self.options.path, 1) end
 
 		self.speed = 150
 		if (self.options.speed) then self.speed = self.options.speed end
+
 		self.actor.sprite:start()
 	end,
 	process = function(self, dt)
-		local currentPos = self.actor.sprite.pos
-		local goalTile = self.options.path[1]
+		local currentTilePos = self.actor.tilePos
+		local currentPixelOffset = self.actor.pixelOffset
+		local goalTilePos = self.options.path[1].pos
 
-		local goalPos = {
-			x=(goalTile.pos.x-1)*gameSettings.tileSize*gameSettings.zoom,
-			y=(goalTile.pos.y-1)*gameSettings.tileSize*gameSettings.zoom
-		}
-
-		if currentPos.x==goalPos.x and currentPos.y==goalPos.y then
-			table.remove(self.options.path,1)
-			self.actor.tilePosCache = self.actor:tilePos()
-			if (#self.options.path == 0) then
-				self.actor.sprite:stop()
-				return self.actor:arrive(goalTile.pos.x,goalTile.pos.y)
+		if (currentTilePos.x == goalTilePos.x and currentTilePos.y == goalTilePos.y) then
+			if (currentPixelOffset.x == 0 and currentPixelOffset.y==0) then
+				table.remove(self.options.path,1)
+				if (#self.options.path == 0) then
+					self.actor.sprite:stop()
+					return self.actor:arrive(goalTilePos)
+				end
+				return true
 			end
-			return true
 		end
 
-		local movement = self.speed * dt
+		local movement 			= self.speed * dt
+		local maxPixelOffset 	= gameSettings.tileSize * gameSettings.zoom
+		local minPixelOffset 	= -1 * maxPixelOffset
 
-		if currentPos.x > goalPos.x then
-			currentPos.x = math.max(currentPos.x-movement, goalPos.x)
+
+		-- naar links
+		if currentTilePos.x > goalTilePos.x then
+			currentPixelOffset.x = currentPixelOffset.x-movement
 		end
-		if currentPos.x < goalPos.x then
-			currentPos.x = math.min(currentPos.x+movement, goalPos.x)
+		-- naar rechts
+		if currentTilePos.x < goalTilePos.x then
+			currentPixelOffset.x = currentPixelOffset.x+movement
 		end
-		if currentPos.y > goalPos.y then
-			currentPos.y = math.max(currentPos.y-movement, goalPos.y)
+		-- omhoog
+		if currentTilePos.y > goalTilePos.y then
+			currentPixelOffset.y = currentPixelOffset.y-movement
 		end
-		if currentPos.y < goalPos.y then
-			currentPos.y = math.min(currentPos.y+movement, goalPos.y)
+		-- omlaag
+		if currentTilePos.y < goalTilePos.y then
+			currentPixelOffset.y = currentPixelOffset.y+movement
 		end
 
-		self.actor.sprite.pos = currentPos
+		currentPixelOffset.x = math.max(minPixelOffset, math.min(maxPixelOffset, currentPixelOffset.x))
+		currentPixelOffset.y = math.max(minPixelOffset, math.min(maxPixelOffset, currentPixelOffset.y))
+
+		if (currentPixelOffset.x >= maxPixelOffset) then
+			self.actor.tilePos.x = self.actor.tilePos.x + 1
+			currentPixelOffset.x = 0
+		end
+		if (currentPixelOffset.x <= minPixelOffset) then
+			self.actor.tilePos.x = self.actor.tilePos.x - 1
+			currentPixelOffset.x = 0
+		end
+		if (currentPixelOffset.y >= maxPixelOffset) then
+			self.actor.tilePos.y = self.actor.tilePos.y + 1
+			currentPixelOffset.y = 0
+		end
+		if (currentPixelOffset.y <= minPixelOffset) then
+			self.actor.tilePos.y = self.actor.tilePos.y - 1
+			currentPixelOffset.y = 0
+		end
+
+		self.actor.pixelOffset = currentPixelOffset
 		return true
 	end
 }
@@ -356,7 +375,7 @@ SoccerManager.keeperWait = Class {
 	end,
 	process = function(self, dt)
 		-- ik heb de bal niet en ik moet wachten.
-		local actorPos = self.actor:tilePos()
+		local actorPos = self.actor.tilePos
 		local rand16Meters = actorPos.y - 1
 		local randomGetal = math.random(1, 100)
 		local goalPosY = 1
@@ -365,9 +384,9 @@ SoccerManager.keeperWait = Class {
 		elseif (rand16Meters > 14 ) then
 			goalPosY = actorPos.y - 1
 		else
-			if (randomGetal <= 49) then 
+			if (randomGetal <= 49) then
 				goalPosY = actorPos.y + 1
-			else 				
+			else
 				goalPosY = actorPos.y - 1
 			end
 		end
@@ -385,15 +404,15 @@ SoccerManager.keeperBlock = Class {
 	end,
 	process = function(self, dt)
 		-- ik heb de bal niet en ik moet wachten.
-		local actorPos = self.actor:tilePos()
+		local actorPos = self.actor.tilePos
 		local randomGetal = math.random(1, 100)
 		local goalPosX = 1
 		local goalPosY = 1
-		if (randomGetal <= 50) then 
-			goalPosX = actorPos.x 
+		if (randomGetal <= 50) then
+			goalPosX = actorPos.x
 			goalPosY = actorPos.y - 1
-		else 
-			goalPosX = actorPos.x 
+		else
+			goalPosX = actorPos.x
 			goalPosY = actorPos.y + 1
 		end
 		path = AStar:find({x=actorPos.x,y=actorPos.y}, {x=goalPosX,y=goalPosY})
@@ -408,16 +427,16 @@ SoccerManager.defenderPositionWalk = Class {
 		SoccerManager.Job.init(self, actor, options)
 	end,
 	process = function(self, dt)
-		local actorPos = self.actor:tilePos()
+		local actorPos = self.actor.tilePos
 		local goalPosX = actorPos.x - 1
 		local goalPosY = 1
 		local randomPOSGetalY = math.random(1, 100)
 		if (randomPOSGetalY <= 50) then
 			goalPosY = actorPos.y - 1
-		else 
+		else
 			goalPosY = actorPos.y + 1
 		end
-		
+
 		path = AStar:find({x=actorPos.x,y=actorPos.y}, {x=goalPosX,y=goalPosY})
 		self.actor:giveJob("WalkPath", {path=path,speed=100})
 		self.actor.energy = self.actor.energy - 1
