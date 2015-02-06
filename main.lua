@@ -5,13 +5,7 @@ local LevelManager = require "SoccerManager.levelmanager"
 
 opponents = {}
 players = {}
-ball = {
-		 x=14, 
-		 	y=15, 
-				 	speed =100
-				 
 
-}
 levelManager = {}
 decals = {}
 match = {}
@@ -102,13 +96,13 @@ end
 
 function matchGameStartScreen:draw()
 	tilemap:draw()
-	
+
 	love.graphics.setColor(0,0,0)
 	local line = "Score " .. teamPlayer.goals .. " - " .. teamOpponent.goals .. "Touch to start the game!"
 	local lineW = mainFont:getWidth(line)
 	love.graphics.print(line, (gameSettings.resolution.width/2)-(lineW/2)+gameSettings.offset.x, 2 + gameSettings.offset.y)
 	love.graphics.reset()
-	
+
 end
 
 function matchGameStartScreen:mousepressed(x, y, button)
@@ -128,24 +122,23 @@ end
 
 function match:draw()
 	tilemap:draw()
-	
+
 	for x=1, #players do
 		players[x]:draw()
 	end
-	
+
 	for x=1, #opponents do
 		opponents[x]:draw()
 	end
-	
-		ball:draw()
-	
+
+	ball:draw()
 
 	love.graphics.setColor(0,0,0)
 	local line = "Score: " .. teamPlayer.goals .. " - " .. teamOpponent.goals .. "Time: " .. matchInformation.time
 	local lineW = mainFont:getWidth(line)
 	love.graphics.print(line, (gameSettings.resolution.width/2)-(lineW/2)+gameSettings.offset.x, 2 + gameSettings.offset.y)
 	love.graphics.reset()
-	
+
 end
 
 function match:keypressed(key)
@@ -155,10 +148,14 @@ function match:keypressed(key)
 end
 
 function match:update(dt)
-	
+
 	for x=1, #opponents do
 		opponents[x]:update(dt)
 	end
+	for x=1, #players do
+		players[x]:update(dt)
+	end
+	ball:update(dt)
 
 	matchInformation.time = math.floor((love.timer.getTime() - levelStartTime))
 end

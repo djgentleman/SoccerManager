@@ -7,15 +7,17 @@ LevelManager = Class {
 	init = function(self)
 		--????????????
 		--type level in de toekomst kun je met verschillende type levels andere mappen laden.
-		--bijvoorbeeld level waar veld onder sneeuw ligt of juist veel zand etc. 
+		--bijvoorbeeld level waar veld onder sneeuw ligt of juist veel zand etc.
 		self.typeLevel = 1
 	end,
 
 	loadMatch = function(self)
-	
+
 		local map = {}
 		local l = self.typeLevel
 		if (l == 1) then
+			-- 22 breed
+			-- 19 hoog
 			map =
 				{
 					{ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},
@@ -64,11 +66,11 @@ LevelManager = Class {
 					SoccerManager.opponent({x=12,y=9}, "attacker", 10),
 					SoccerManager.opponent({x=12,y=13}, "attacker", 10)
 				 }
-
+				 ball = SoccerManager.ball(10,10,100)
 		end
-		
+
 		tilemap = SoccerManager.Tilemap(love.graphics.newImage("tileset/tilemap.png"))
-		ball = SoccerManager.ball(ball.x,ball.y,ball.speed)
+
 		tilemap:loadMap(map)
 	end
 }

@@ -59,7 +59,7 @@ AStar.node = Class {
 }
 
 function AStar:findFromEntity(entity, endPos)
-	local currentTile = entity:tilePos()
+	local currentTile = entity.tilePos
 	local currentPixelPos = entity.sprite.pos
 	if (currentPixelPos.x ~= currentTile.x * (gameSettings.tileSize * gameSettings.zoom) ) then
 		-- x beweegt
@@ -104,7 +104,7 @@ function AStar:find(startPos, endPos, options)
 	openList = {}
 	table.insert(openList, AStar.node(startPos))
     --print("astar", startPos.x, startPos.y, endPos.x, endPos.y)
-	
+
 	local node = false
 	local safety = 0
 	while (#openList>0) do
@@ -168,7 +168,7 @@ function AStar:find(startPos, endPos, options)
 		end
 	end
 
-	if (node.pos.x ~= endPos.x and node.pos.y ~= endPos.y) then
+	if (node.pos.x ~= endPos.x or node.pos.y ~= endPos.y) then
 		return {AStar.node(startPos)}
 	end
 
